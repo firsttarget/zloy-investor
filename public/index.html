@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Злой инвестор — тренажёр защиты стартапа</title>
+  <meta name="description" content="ИИ-тренажёр: 5 неудобных вопросов, оценка по критериям «Стартап как диплом» и 3 совета до выхода на сцену.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">▲</span> Злой инвестор</div>
+    <span id="mode-badge" class="badge" hidden>демо-режим</span>
+  </header>
+
+  <main>
+    <!-- Экран 1: питч -->
+    <section id="screen-intro" class="screen">
+      <div id="round-banner" class="banner" hidden></div>
+
+      <div class="persona-card">
+        <div class="persona-head">
+          <div class="avatar" id="persona-avatar">😤</div>
+          <div>
+            <div class="eyebrow">Сегодня против вас</div>
+            <h1 id="persona-name">Бизнес-ангел</h1>
+          </div>
+        </div>
+        <dl class="persona-grid">
+          <div><dt>Кто</dt><dd id="persona-who"></dd></div>
+          <div><dt>Хочет</dt><dd id="persona-wants"></dd></div>
+          <div><dt>Боится</dt><dd id="persona-fears"></dd></div>
+          <div><dt>Ведёт себя</dt><dd id="persona-behavior"></dd></div>
+        </dl>
+      </div>
+
+      <p class="lead">5 вопросов, на которых вы сыпетесь. Оценка по 10 критериям «Стартап как диплом». 3 задачи, которые успеете сделать до сцены. Около 10 минут.</p>
+
+      <form id="pitch-form" novalidate>
+        <label for="pitch" class="label">Текст вашего питча</label>
+        <textarea id="pitch" rows="9" maxlength="6000" placeholder="Что за продукт, для кого, какую проблему решает, кто платит, что уже сделали (интервью, пилоты, продажи — с цифрами)."></textarea>
+        <div class="row-between small">
+          <button type="button" id="sample-btn" class="link">Вставить пример питча</button>
+          <span id="pitch-counter">0 / 6000</span>
+        </div>
+
+        <label for="days" class="label">Когда выступление?</label>
+        <select id="days">
+          <option value="1">Завтра</option>
+          <option value="2">Через 2 дня</option>
+          <option value="3" selected>Через 3 дня</option>
+          <option value="5">Через 5 дней</option>
+          <option value="7">Через неделю или позже</option>
+        </select>
+
+        <div id="pitch-error" class="error" role="alert" hidden></div>
+        <button type="submit" id="start-btn" class="btn-primary">Начать прожарку</button>
+        <p class="hint">Питч и ответы не сохраняются на сервере после сессии. Не вставляйте персональные данные.</p>
+      </form>
+    </section>
+
+    <!-- Экран 2: диалог -->
+    <section id="screen-chat" class="screen" hidden>
+      <div class="chat-head">
+        <div class="avatar small" id="chat-avatar">😤</div>
+        <div>
+          <div class="chat-name" id="chat-name">Злой инвестор</div>
+          <div class="chat-status" id="chat-status">в сети</div>
+        </div>
+        <div class="progress" id="progress" aria-label="Прогресс вопросов"></div>
+      </div>
+
+      <div id="messages" class="messages" aria-live="polite"></div>
+
+      <form id="answer-form" class="composer" novalidate>
+        <div class="composer-meta small">
+          <span id="topic-label"></span>
+          <span id="timer" title="Время на ответ. На сцене у вас 30–60 секунд.">0:00</span>
+        </div>
+        <div class="composer-row">
+          <textarea id="answer" rows="2" maxlength="1500" placeholder="Коротко и с цифрами. «Не знаю, проверю к пятнице» — тоже ответ."></textarea>
+          <button type="button" id="mic-btn" class="icon-btn" title="Ответить голосом" aria-label="Ответить голосом" hidden>🎙</button>
+          <button type="submit" id="send-btn" class="icon-btn send" aria-label="Отправить">↑</button>
+        </div>
+        <div id="answer-error" class="error" role="alert" hidden></div>
+      </form>
+    </section>
+
+    <!-- Экран 3: результат -->
+    <section id="screen-result" class="screen" hidden>
+      <div class="score-card">
+        <div class="score-ring" id="score-ring"><span id="score-total">0</span><small>/100</small></div>
+        <div>
+          <div class="decision" id="decision"></div>
+          <div class="small muted" id="score-delta"></div>
+          <div class="small muted" id="round-delta"></div>
+        </div>
+      </div>
+
+      <blockquote class="verdict" id="verdict"></blockquote>
+      <div id="manipulation-note" class="note" hidden>Попытка выпросить балл замечена. На оценку не повлияла: её считает код по фактам.</div>
+
+      <h2>3 задачи до выхода на сцену</h2>
+      <ol id="advice" class="advice"></ol>
+
+      <h2>Оценка по критериям «Стартап как диплом»</h2>
+      <p class="small muted">Шкала 0–3: нет данных → заявлено → конкретика → доказано действиями. Стрелка показывает, как изменился балл после ваших ответов. Итог — сумма баллов с весами инвестора.</p>
+      <div id="criteria" class="criteria"></div>
+
+      <div class="actions">
+        <button type="button" id="copy-btn" class="btn-secondary">Скопировать план</button>
+        <button type="button" id="again-btn" class="btn-primary">Второй раунд с тем же питчем</button>
+        <button type="button" id="new-btn" class="link">Новый питч</button>
+      </div>
+      <p class="small muted" id="avg-time"></p>
+    </section>
+  </main>
+
+  <footer class="foot small muted">Прожарка бьёт по проекту, а не по человеку. Кейс Vibecode Nights · Стартап-клуб</footer>
+
+  <script src="/samples.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

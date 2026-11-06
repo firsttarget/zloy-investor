@@ -1,0 +1,16 @@
+{
+  "name": "zloy-investor",
+  "version": "1.0.0",
+  "description": "ИИ-тренажёр защиты стартапа: 5 вопросов злого инвестора, оценка по критериям «Стартап как диплом», 3 совета до выступления",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node test/smoke.js"
+  },
+  "engines": {
+    "node": ">=18.17"
+  },
+  "license": "MIT"
+}

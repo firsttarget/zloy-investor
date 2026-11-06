@@ -1,0 +1,18 @@
+# Деплой на Render: New → Blueprint → выбрать репозиторий. Ключ API ввести в панели (sync: false).
+services:
+  - type: web
+    name: zloy-investor
+    runtime: node
+    plan: free
+    buildCommand: "echo no build"
+    startCommand: "node server.js"
+    healthCheckPath: /healthz
+    envVars:
+      - key: INVESTOR
+        value: angel
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_BASE_URL
+        sync: false
