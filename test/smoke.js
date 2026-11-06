@@ -189,6 +189,34 @@ async function main() {
     assert.equal(c6.verified, false);
   });
 
+  await test('Балл по питчу проверяется своей цитатой, цитата из ответа его не занижает', async () => {
+    // Ответ намеренно без общих слов с питчем: иначе фаззи-проверка нашла бы его и в питче.
+    const answer = 'Вчера подписали договор с комендантом общаги номер 5 на 30 комплектов';
+    const s = { pitch: GOOD_PITCH, turns: [{ answer }], persona: getPersona('angel') };
+    // Цитата score_final взята из ответа, цитата score_pitch — из питча: оба балла должны выжить.
+    const ok = engine._computeScores(s, {
+      criteria: [{
+        id: 'c6', score_pitch: 3, score_final: 3,
+        evidence_pitch: 'Запустили пилот на 2 недели, получили 11 оплаченных заказов',
+        evidence: answer, comment: '',
+      }],
+    }).rows.find((r) => r.id === 'c6');
+    assert.equal(ok.scorePitch, 3, 'балл по питчу не должен падать из-за цитаты из ответа');
+    assert.equal(ok.score, 3);
+
+    // Выдуманная цитата по питчу режет score_pitch, но честный score_final остаётся.
+    const faked = engine._computeScores(s, {
+      criteria: [{
+        id: 'c6', score_pitch: 3, score_final: 3,
+        evidence_pitch: 'Продали 500 подписок крупным вузам',
+        evidence: answer, comment: '',
+      }],
+    }).rows.find((r) => r.id === 'c6');
+    assert.ok(faked.scorePitch <= 1);
+    assert.equal(faked.evidencePitch, '');
+    assert.equal(faked.score, 3);
+  });
+
   await test('Советы-«вода» отклоняются валидатором', async () => {
     const bad = [
       { criterion_id: 'c3', action: 'Проведите исследование рынка', time: '1 месяц', stage_line: 'x' },
