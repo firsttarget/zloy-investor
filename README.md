@@ -4,7 +4,7 @@
 
 > Прожарка бьёт по проекту, а не по человеку.
 
-**Прототип:** `https://<ваш-адрес>.onrender.com`
+**Прототип:** https://zloy-investor.onrender.com
 **One-pager:** [docs/one-pager.pdf](docs/one-pager.pdf) · **Обоснование решений 01–07:** [docs/DECISIONS.md](docs/DECISIONS.md)
 
 Кейс «Злой инвестор», Vibecode Nights, Стартап-клуб.
